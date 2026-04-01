@@ -8,17 +8,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type DoctorHandler struct {
+type doctorHandler struct {
 	usecase domain.DoctorUsecase
 }
 
-func NewDoctorHandler(usecase domain.DoctorUsecase) *DoctorHandler {
-	return &DoctorHandler{
+func NewDoctorHandler(usecase domain.DoctorUsecase) *doctorHandler {
+	return &doctorHandler{
 		usecase: usecase,
 	}
 }
 
-func (h *DoctorHandler) Create(c *gin.Context) {
+func (h *doctorHandler) Create(c *gin.Context) {
 	var req dto.DoctorRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -34,7 +34,7 @@ func (h *DoctorHandler) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, dto.FromDomain(doctor))
 }
 
-func (h *DoctorHandler) GetAll(c *gin.Context) {
+func (h *doctorHandler) GetAll(c *gin.Context) {
 	doctors, err := h.usecase.GetAll(c.Request.Context())
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
@@ -48,7 +48,7 @@ func (h *DoctorHandler) GetAll(c *gin.Context) {
 
 }
 
-func (h *DoctorHandler) GetById(c *gin.Context) {
+func (h *doctorHandler) GetById(c *gin.Context) {
 	id := c.Param("id")
 
 	doctor, err := h.usecase.GetById(c.Request.Context(), id)

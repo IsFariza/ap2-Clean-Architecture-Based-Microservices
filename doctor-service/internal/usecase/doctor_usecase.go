@@ -7,17 +7,17 @@ import (
 	"github.com/IsFariza/doctor-service/internal/domain"
 )
 
-type DoctorUsecase struct {
+type doctorUsecase struct {
 	doctorRepo domain.DoctorRepo
 }
 
-func NewDoctorUsecase(doctorRepo domain.DoctorRepo) *DoctorUsecase {
-	return &DoctorUsecase{
+func NewDoctorUsecase(doctorRepo domain.DoctorRepo) *doctorUsecase {
+	return &doctorUsecase{
 		doctorRepo: doctorRepo,
 	}
 }
 
-func (uc *DoctorUsecase) Create(ctx context.Context, doctor *domain.Doctor) error {
+func (uc *doctorUsecase) Create(ctx context.Context, doctor *domain.Doctor) error {
 	if doctor.FullName == "" {
 		return errors.New("full name is required")
 	}
@@ -32,14 +32,14 @@ func (uc *DoctorUsecase) Create(ctx context.Context, doctor *domain.Doctor) erro
 	return uc.doctorRepo.Create(ctx, doctor)
 }
 
-func (uc *DoctorUsecase) GetAll(ctx context.Context) ([]*domain.Doctor, error) {
+func (uc *doctorUsecase) GetAll(ctx context.Context) ([]*domain.Doctor, error) {
 	return uc.doctorRepo.GetAll(ctx)
 }
 
-func (uc *DoctorUsecase) GetByEmail(ctx context.Context, email string) (*domain.Doctor, error) {
+func (uc *doctorUsecase) GetByEmail(ctx context.Context, email string) (*domain.Doctor, error) {
 	return uc.doctorRepo.GetByEmail(ctx, email)
 }
 
-func (uc *DoctorUsecase) GetById(ctx context.Context, id string) (*domain.Doctor, error) {
+func (uc *doctorUsecase) GetById(ctx context.Context, id string) (*domain.Doctor, error) {
 	return uc.doctorRepo.GetById(ctx, id)
 }

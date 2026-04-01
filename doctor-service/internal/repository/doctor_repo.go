@@ -9,17 +9,17 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type DoctorRepository struct {
+type doctorRepository struct {
 	collection *mongo.Collection
 }
 
-func NewDoctorRepository(client *mongo.Client) *DoctorRepository {
-	return &DoctorRepository{
+func NewDoctorRepository(client *mongo.Client) *doctorRepository {
+	return &doctorRepository{
 		collection: client.Database("doctor_db").Collection("doctors"),
 	}
 }
 
-func (r *DoctorRepository) Create(ctx context.Context, doctor *domain.Doctor) error {
+func (r *doctorRepository) Create(ctx context.Context, doctor *domain.Doctor) error {
 	doc := FromDomain(doctor)
 
 	res, err := r.collection.InsertOne(ctx, doc)
@@ -32,7 +32,7 @@ func (r *DoctorRepository) Create(ctx context.Context, doctor *domain.Doctor) er
 	return nil
 }
 
-func (r *DoctorRepository) GetById(ctx context.Context, id string) (*domain.Doctor, error) {
+func (r *doctorRepository) GetById(ctx context.Context, id string) (*domain.Doctor, error) {
 	var doc DoctorDoc
 	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -48,7 +48,7 @@ func (r *DoctorRepository) GetById(ctx context.Context, id string) (*domain.Doct
 	return doc.ToDomain(), nil
 }
 
-func (r *DoctorRepository) GetAll(ctx context.Context) ([]*domain.Doctor, error) {
+func (r *doctorRepository) GetAll(ctx context.Context) ([]*domain.Doctor, error) {
 	var docs []DoctorDoc
 
 	cursor, err := r.collection.Find(ctx, bson.M{})
@@ -69,7 +69,7 @@ func (r *DoctorRepository) GetAll(ctx context.Context) ([]*domain.Doctor, error)
 	return result, nil
 }
 
-func (r *DoctorRepository) GetByEmail(ctx context.Context, email string) (*domain.Doctor, error) {
+func (r *doctorRepository) GetByEmail(ctx context.Context, email string) (*domain.Doctor, error) {
 	var doc DoctorDoc
 	filter := primitive.M{"email": email}
 	if err := r.collection.FindOne(ctx, filter).Decode(&doc); err != nil {
